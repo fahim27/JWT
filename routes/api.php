@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 /////Start The Admin Route Group
 Route::group([
-    // 'middleware'=>['admin'],
+     'middleware'=>['assign.guard:users','jwt.auth'],
     'namespace' => 'Api',
   //  'prefix' => 'api'
 ],
@@ -28,5 +28,21 @@ Route::group([
 
         Route::get('/index', 'StudentController@index')->name('student');
 
+    
+    });
+
+
+    Route::group([
+
+      //  'middleware' => 'api',
+        'namespace' => 'Api',
+        'prefix' => 'auth'
+    
+    ], function ($router) {
+    
+        Route::post('login', 'AuthController@login');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('me', 'AuthController@me');
     
     });
